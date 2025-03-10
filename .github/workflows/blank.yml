@@ -34,7 +34,7 @@ jobs:
     - name: Manual Compile
       run: |
         mkdir -p classes
-        javac -d classes src/Simple.java
+        javac -d classes src/main.java
         echo "Compiled classes:"
         find classes -name "*.class"
         
