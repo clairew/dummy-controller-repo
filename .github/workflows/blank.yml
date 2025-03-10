@@ -1,4 +1,4 @@
-name: CI
+name: CodeQL
 
 on:
   push:
@@ -26,13 +26,26 @@ jobs:
         distribution: 'temurin'
         java-version: '11'
         
-    - name: Build with Maven
-      run: mvn compile
-      
+    - name: Debug Files
+      run: |
+        echo "Files in repository:"
+        find . -type f | grep -v "\.git"
+        
+    - name: Manual Compile
+      run: |
+        mkdir -p classes
+        javac -d classes src/Simple.java
+        echo "Compiled classes:"
+        find classes -name "*.class"
+        
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
       with:
         languages: java
+        queries: security-and-quality
+        
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v3
       
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
